@@ -7,8 +7,11 @@ const TodoBoard = (probs) => {
     return(
 
         <div>
-            <h4>Todo List</h4>
-            {probs.todoList.map((item)=><TodoItem key={item.id++} item={item} completeTodo={probs.completeTodo} />)}
+            <h4>List</h4>
+            {probs.todoList.map((item)=>
+                <TodoItem key={item.id++} item={item} 
+                    completeTodo={probs.completeTodo} 
+                    deleteTodo={probs.deleteTodo} />)}
         </div>
 
     )
