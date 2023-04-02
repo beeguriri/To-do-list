@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import './App.css';
 import TodoBoard from './components/TodoBoard';
@@ -40,17 +40,24 @@ function App() {
     )
   };
 
+  const deleteTodo = (click) => {
+    setTodoList(todoList.filter((item) => {
+      return item.id !== click.id;
+    }))
+  };
 
   return (
     <div className="main">
-      <br /><br />
-      <TextField id='todo-item-input' label='Todo Item' variant='outlined' value={inputValue} 
-            onChange= {(event) => setInputValue(event.target.value)} />
+      <br />
+      <h3>Todo List App</h3>
+      <br />
+      <TextField value={inputValue} 
+            onChange= {(event) => setInputValue(event.target.value)}
+            color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
       <Button variant="outlined" onClick={addItem}>Submit</Button>
       <br /><br />
-      <TodoBoard todoList = {todoList} completeTodo={completeTodo} />
+      <TodoBoard todoList = {todoList} completeTodo={completeTodo} deleteTodo={deleteTodo} />
       <br /><br />
-
     </div>
   );
 }
