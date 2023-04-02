@@ -8,10 +8,13 @@ const TodoBoard = (probs) => {
 
         <div>
             <h4>List</h4>
-            {probs.todoList.map((item)=>
-                <TodoItem key={item.id++} item={item} 
-                    completeTodo={probs.completeTodo} 
-                    deleteTodo={probs.deleteTodo} />)}
+            {probs.todoList
+                .sort((a,b) => a.id > b.id ? -1 : 1)
+                .map((item)=>
+                    <TodoItem key={item.id} item={item} 
+                        completeTodo={probs.completeTodo} 
+                        deleteTodo={probs.deleteTodo}
+                        setUpdateItem={probs.setUpdateItem} />)}
         </div>
 
     )
