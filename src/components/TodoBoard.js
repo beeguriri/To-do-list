@@ -3,12 +3,12 @@ import TodoItem from "./TodoItem";
 
 const TodoBoard = (probs) => {
 
-    //console.log(todoList)
+    console.log(probs)
     return(
 
         <div>
-            <h3>Todo List</h3>
-            {probs.todoList.map((item)=><TodoItem item={item} />)}
+            <h4>Todo List</h4>
+            {probs.todoList.map((item)=><TodoItem key={item.id++} item={item} completeTodo={probs.completeTodo} />)}
         </div>
 
     )
