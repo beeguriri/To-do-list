@@ -8,8 +8,6 @@ import TodoBoard from './components/TodoBoard';
 
 function App() {
 
-  // let index=0;
-
   const[inputValue, setInputValue] = useState('');
   const[updateItem, setUpdateItem] = useState('');
   const[todoList, setTodoList] = useState([]);
@@ -79,20 +77,28 @@ function App() {
       <h3>Todo List App</h3>
       <br />
 
-      {/* Add Task */}
-      <TextField value={inputValue} 
-            onChange= {(event) => setInputValue(event.target.value)}
-            color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
-      <Button variant="outlined" onClick={addItem}>Submit</Button>
-      <br /><br />
 
-      {/* Update Task */}
-      <TextField value={updateItem && updateItem.item} 
-            onChange= {(event) => changeTodo(event)}
-            color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
-      <Button variant="outlined" onClick={updateTodo}>Update</Button>
-      <Button variant="outlined" onClick={cancelUpdate}>Cancel</Button>
-      <br /><br />
+
+      {updateItem && updateItem.item ? (
+        <>
+          {/* Update Task */}
+          <TextField value={updateItem && updateItem.item} 
+              onChange= {(event) => changeTodo(event)}
+              color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
+          <Button variant="outlined" onClick={updateTodo}>Update</Button>
+          <Button variant="outlined" onClick={cancelUpdate}>Cancel</Button>
+          <br /><br />
+        </>
+      ) : (
+        <>
+          {/* Add Task */}
+          <TextField value={inputValue} 
+            onChange= {(event) => setInputValue(event.target.value)}
+                  color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
+          <Button variant="outlined" onClick={addItem}>Submit</Button>
+          <br /><br />
+        </>
+      )}
 
       {/* Task List 보여지는 영역*/}
       {todoList && todoList.length ?  
