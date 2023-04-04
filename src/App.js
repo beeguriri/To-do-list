@@ -15,11 +15,16 @@ function App() {
 
   const addItem = () => {
     console.log('addItem :', inputValue)
+
+    if(inputValue==="") {
+        alert("할일을 입력하세요!")
+    } else {
     //기존아이템 뒤에 새로운 inputvalue 추가
     setTodoList([...todoList, { id: todoList.length+1, item: inputValue, isFinished: false}])
 
     //submit 클릭하면 인풋박스의 값 초기화
     setInputValue("");
+   }
   };
 
   const completeTodo = (click) => {
@@ -39,6 +44,9 @@ function App() {
   };
 
   const deleteTodo = (click) => {
+
+    alert("할일을 삭제합니다.")
+    
     setTodoList(todoList.filter((item) => {
       return item.id !== click.id;
     }))
