@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Swal from 'sweetalert2'
+
 import './App.css';
 import TodoBoard from './components/TodoBoard';
-
 
 function App() {
 
@@ -17,7 +17,8 @@ function App() {
     console.log('addItem :', inputValue)
 
     if(inputValue==="") {
-        alert("할일을 입력하세요!")
+        Swal.fire('할일을 입력하세요!')
+        
     } else {
     //기존아이템 뒤에 새로운 inputvalue 추가
     setTodoList([...todoList, { id: todoList.length+1, item: inputValue, isFinished: false}])
@@ -45,11 +46,21 @@ function App() {
 
   const deleteTodo = (click) => {
 
-    alert("할일을 삭제합니다.")
-    
-    setTodoList(todoList.filter((item) => {
-      return item.id !== click.id;
-    }))
+    Swal.fire({
+      title: '할일을 삭제합니다!',
+      showCancelButton: true,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    }).then((result) => {
+      if (result.isConfirmed){
+      setTodoList(todoList.filter((item) => {
+        return item.id !== click.id;
+      }))}
+    })
   };
 
   const cancelUpdate = () => {
@@ -80,41 +91,42 @@ function App() {
   };
 
   return (
-    <div className="main">
-      <br />
-      <h3>Todo List App</h3>
-      <br />
-
-
-
-      {updateItem && updateItem.item ? (
-        <>
-          {/* Update Task */}
-          <TextField value={updateItem && updateItem.item} 
-              onChange= {(event) => changeTodo(event)}
-              color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
-          <Button variant="outlined" onClick={updateTodo}>Update</Button>
-          <Button variant="outlined" onClick={cancelUpdate}>Cancel</Button>
-          <br /><br />
-        </>
-      ) : (
-        <>
-          {/* Add Task */}
-          <TextField value={inputValue} 
-            onChange= {(event) => setInputValue(event.target.value)}
+    <div className="all">
+      <div className="content">
+        <div className="header">
+          <h3>Todo List App</h3>
+        </div>
+        <div className="main">
+          {updateItem && updateItem.item ? (
+            <div className="update">
+              {/* Update Task */}
+              <TextField className="textfield" value={updateItem && updateItem.item} 
+                  onChange= {(event) => changeTodo(event)}
                   color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
-          <Button variant="outlined" onClick={addItem}>Submit</Button>
-          <br /><br />
-        </>
-      )}
-
-      {/* Task List 보여지는 영역*/}
-      {todoList && todoList.length ?  
-        <TodoBoard todoList = {todoList} 
-            completeTodo={completeTodo} 
-            deleteTodo={deleteTodo} 
-            setUpdateItem={setUpdateItem} /> : 'No Tasks...'}
-      <br /><br />
+              <Button variant="outlined" onClick={updateTodo}>Update</Button>
+              <Button variant="outlined" onClick={cancelUpdate}>Cancel</Button>
+              <br /><br />
+            </div>
+          ) : (
+            <div className="add">
+              {/* Add Task */}
+              <TextField className="textfield" value={inputValue} 
+                onChange= {(event) => setInputValue(event.target.value)}
+                      color="secondary" id='todo-item-input' label='Todo Item' variant='outlined' />
+              <Button variant="outlined" onClick={addItem}>Submit</Button>
+              <br /><br />
+            </div>
+          )}
+          {/* Task List 보여지는 영역*/}
+          <div className="list">
+          {todoList && todoList.length ?  
+            <TodoBoard todoList = {todoList} 
+                completeTodo={completeTodo} 
+                deleteTodo={deleteTodo} 
+                setUpdateItem={setUpdateItem} /> : '할일이 없습니다🐣'}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
