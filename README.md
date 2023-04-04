@@ -15,11 +15,11 @@
 + [ ] 입력하기 기능
   + [x] 목록에 추가하기(최신입력이 제일 위로 가도록)
   + [x] 목록 클릭 시 완료/완료취소 표시하기(취소선으로 구분)
-  + [ ] 텍스트 빈칸으로 입력 시 alert 띄우기
+  + [x] 텍스트 빈칸으로 입력 시 alert 띄우기
   + [ ] (옵션) 완료목록 리스트 별도 관리
 + [ ] 삭제하기 기능
   + [x] 삭제 아이콘 클릭 시 리스트에서 삭제
-  + [ ] 삭제 아이콘 클릭 시 alert 띄우기
+  + [x] 삭제 아이콘 클릭 시 alert 띄우기 / 삭제취소
 + [x] 수정하기 기능
   + [x] 수정 아이콘 클릭 시 리스트 아이템 수정
   + [x] 수정/수정취소
@@ -33,6 +33,7 @@
 + React ver.18.2.0
 ```javascript
 npm install @mui/material @emotion/react @emotion/styled
+npm install sweetalert2
 ```
 <br />
 
@@ -40,3 +41,5 @@ npm install @mui/material @emotion/react @emotion/styled
 + https://youtu.be/TjUju3aUIDM
 + https://youtu.be/TmDNBEdHzVs
 + https://docs.google.com/document/d/1wkJLct-nTvNGoOGexvG_v8y-vdNzEPXTPi_y04OAFPM/edit
++ https://mui.com/material-ui/
++ https://sweetalert2.github.io/
