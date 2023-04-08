@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
 
-import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, getDocs } from "firebase/firestore";
 
 
 const TodoMain = (probs) => {
@@ -14,6 +14,22 @@ const TodoMain = (probs) => {
     const[inputValue, setInputValue] = useState('');
     const[updateItem, setUpdateItem] = useState('');
     const[todoList, setTodoList] = useState([]);
+
+    useEffect(() => {
+        getDocs(collection(db, "inputValue")).then((querySnapshot) => {
+            const firestoreTodoItemList = [];
+            querySnapshot.forEach((doc) => {
+                firestoreTodoItemList.push({
+                    id: doc.id,
+                    item: doc.data().item,
+                    isFinished: doc.data().isFinished,
+                });
+            });
+            console.log('firestoreTodoItemList', firestoreTodoItemList)
+            
+            setTodoList(firestoreTodoItemList);
+        });
+    }, []);
 
     const addItem = async() => {
         
