@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
 
-import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
 
 
 const TodoMain = (probs) => {
@@ -58,7 +58,10 @@ const TodoMain = (probs) => {
         }))
     };
 
-    const deleteTodo = (click) => {
+    const deleteTodo = async (click) => {
+
+        const todoItemRef = doc(db, "inputValue", click.id);
+        await deleteDoc(todoItemRef);
 
         Swal.fire({
             title: '할일을 삭제합니다!',
