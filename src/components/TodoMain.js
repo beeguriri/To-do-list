@@ -4,7 +4,8 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
 
-import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, 
+    getDocs, query, orderBy, } from "firebase/firestore";
 
 
 const TodoMain = (probs) => {
@@ -20,13 +21,16 @@ const TodoMain = (probs) => {
     //database에 추가하고 다시 다운로드 하는식으로 데이터 플로우 변경
     const syncTodoItemListStateWithFirestore = () => {
 
-        getDocs(collection(db, "inputValue")).then((querySnapshot) => {
+        const q = query(collection(db, "inputValue"), orderBy("createdTime", "desc"));
+
+        getDocs(q).then((querySnapshot) => {
             const firestoreTodoItemList = [];
             querySnapshot.forEach((doc) => {
                 firestoreTodoItemList.push({
                     id: doc.id,
                     item: doc.data().item,
                     isFinished: doc.data().isFinished,
+                    createdTime: doc.data().createdTime ?? 0,
                 });
             });
             // console.log('firestoreTodoItemList', firestoreTodoItemList)
@@ -54,6 +58,7 @@ const TodoMain = (probs) => {
         await addDoc(collection(db, "inputValue"), {
             item: inputValue,
             isFinished: false,
+            createdTime: Math.floor(Date.now() / 1000),
         });
 
         //데이터 베이스 동기화
