@@ -6,15 +6,30 @@ import TodoBoard from './TodoBoard';
 import TodoAppBar from './TodoAppBar';
 
 import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, 
-    getDocs, query, orderBy, } from "firebase/firestore";
+            getDocs, query, orderBy, } from "firebase/firestore";
+
+import { GoogleAuthProvider, getAuth, signInWithRedirect, 
+            onAuthStateChanged, signOut, } from "firebase/auth";
 
 const TodoMain = (probs) => {
 
     const db = getFirestore(probs.app);
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(probs.app);
 
     const[inputValue, setInputValue] = useState('');
     const[updateItem, setUpdateItem] = useState('');
     const[todoList, setTodoList] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    //로그인 관리
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+        setCurrentUser(user.uid);
+        } else {
+        setCurrentUser(null);
+        }
+    });
 
     //데이터가 추가/상태변경/삭제/수정이 될때마다
     //각 함수에서 데이터베이스 접근하는게 아니라
@@ -162,8 +177,7 @@ const TodoMain = (probs) => {
         <div className="all">
             <div className="content">
                 <div className="header">
-                    {/* <h3>Todo List App</h3> */}
-                    <TodoAppBar />
+                    <TodoAppBar currentUser={currentUser} app={probs.app} provider={provider} auth={auth}/>
                 </div>
                 <div className="main">
                     {updateItem && updateItem.item ? (
