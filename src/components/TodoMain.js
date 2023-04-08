@@ -4,21 +4,32 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
 
-const TodoMain = () => {
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+
+const TodoMain = (probs) => {
+
+    const db = getFirestore(probs.app);
 
     const[inputValue, setInputValue] = useState('');
     const[updateItem, setUpdateItem] = useState('');
     const[todoList, setTodoList] = useState([]);
 
-    const addItem = () => {
+    const addItem = async() => {
+        
         console.log('addItem :', inputValue)
 
+        const docRef = await addDoc(collection(db, "inputValue"), {
+            item: inputValue,
+            isFinished: false,
+        });
+        
         if(inputValue==="") {
         Swal.fire('할일을 입력하세요!')
 
         } else {
         //기존아이템 뒤에 새로운 inputvalue 추가
-        setTodoList([...todoList, { id: todoList.length+1, item: inputValue, isFinished: false}])
+        setTodoList([...todoList, { id: docRef.id, item: inputValue, isFinished: false}])
 
         //submit 클릭하면 인풋박스의 값 초기화
         setInputValue("");
