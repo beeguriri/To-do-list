@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem";
 
 const TodoBoard = (probs) => {
 
-    console.log(probs)
+    // console.log(probs)
     return(
 
         <>
