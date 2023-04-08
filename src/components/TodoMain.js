@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
+import TodoAppBar from './TodoAppBar';
 
 import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, 
     getDocs, query, orderBy, } from "firebase/firestore";
-
 
 const TodoMain = (probs) => {
 
@@ -162,7 +162,8 @@ const TodoMain = (probs) => {
         <div className="all">
             <div className="content">
                 <div className="header">
-                    <h3>Todo List App</h3>
+                    {/* <h3>Todo List App</h3> */}
+                    <TodoAppBar />
                 </div>
                 <div className="main">
                     {updateItem && updateItem.item ? (
