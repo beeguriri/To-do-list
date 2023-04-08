@@ -6,37 +6,29 @@ import TodoBoard from './TodoBoard';
 import TodoAppBar from './TodoAppBar';
 
 import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, 
-            getDocs, query, orderBy, } from "firebase/firestore";
+            getDocs, query, orderBy, where,} from "firebase/firestore";
 
-import { GoogleAuthProvider, getAuth, signInWithRedirect, 
-            onAuthStateChanged, signOut, } from "firebase/auth";
 
 const TodoMain = (probs) => {
 
     const db = getFirestore(probs.app);
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth(probs.app);
 
     const[inputValue, setInputValue] = useState('');
     const[updateItem, setUpdateItem] = useState('');
     const[todoList, setTodoList] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
 
-    //로그인 관리
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-        setCurrentUser(user.uid);
-        } else {
-        setCurrentUser(null);
-        }
-    });
+
 
     //데이터가 추가/상태변경/삭제/수정이 될때마다
     //각 함수에서 데이터베이스 접근하는게 아니라
     //database에 추가하고 다시 다운로드 하는식으로 데이터 플로우 변경
     const syncTodoItemListStateWithFirestore = () => {
 
-        const q = query(collection(db, "inputValue"), orderBy("createdTime", "desc"));
+        // const q = query(collection(db, "inputValue"), orderBy("createdTime", "desc"));
+        const q = query(collection(db, "inputValue"), 
+                            where("userId", "==", currentUser), 
+                            orderBy("createdTime", "desc"));
 
         getDocs(q).then((querySnapshot) => {
             const firestoreTodoItemList = [];
@@ -46,6 +38,7 @@ const TodoMain = (probs) => {
                     item: doc.data().item,
                     isFinished: doc.data().isFinished,
                     createdTime: doc.data().createdTime ?? 0,
+                    userId: doc.data().userId,
                 });
             });
             // console.log('firestoreTodoItemList', firestoreTodoItemList)
@@ -56,9 +49,10 @@ const TodoMain = (probs) => {
 
     useEffect(() => {
 
+        console.log('currentUser', currentUser)
         syncTodoItemListStateWithFirestore();
 
-    }, []);
+    }, [currentUser]);
         
 
     const addItem = async() => {
@@ -74,6 +68,7 @@ const TodoMain = (probs) => {
             item: inputValue,
             isFinished: false,
             createdTime: Math.floor(Date.now() / 1000),
+            userId: currentUser,
         });
 
         //데이터 베이스 동기화
@@ -177,7 +172,7 @@ const TodoMain = (probs) => {
         <div className="all">
             <div className="content">
                 <div className="header">
-                    <TodoAppBar currentUser={currentUser} app={probs.app} provider={provider} auth={auth}/>
+                    <TodoAppBar currentUser={currentUser} setCurrentUser= {setCurrentUser} app={probs.app} />
                 </div>
                 <div className="main">
                     {updateItem && updateItem.item ? (

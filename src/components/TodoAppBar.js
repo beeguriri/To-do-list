@@ -5,23 +5,36 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, } from "firebase/auth";
 import { signInWithRedirect, signOut, } from "firebase/auth";
 
 const TodoAppBar = (probs) => {
 
-    const loginWithGoogleButton = (
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(probs.app);
+
+    //로그인 관리
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+        probs.setCurrentUser(user.uid);
+        } else {
+            probs.setCurrentUser(null);
+        }
+    });
+
+    const loginButton = (
         <Button color="inherit" onClick={() => {
-              signInWithRedirect(probs.auth, probs.provider);
+              signInWithRedirect(auth, provider);
         }}>Login</Button>
     );
     
     const logoutButton = (
         <Button color="inherit" onClick={() => {
-              signOut(probs.auth);
+              signOut(auth);
         }}>Log out</Button>
     );
     
-    const button = probs.currentUser === null ? loginWithGoogleButton : logoutButton;
+    const button = probs.currentUser === null ? loginButton : logoutButton;
         
     return(
 
