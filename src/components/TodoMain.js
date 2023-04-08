@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2'
 import TodoBoard from './TodoBoard';
 
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
 
 
 const TodoMain = (probs) => {
@@ -36,7 +36,12 @@ const TodoMain = (probs) => {
         }
     };
 
-    const completeTodo = (click) => {
+    const completeTodo = async (click) => {
+
+        const todoItemRef = doc(db, "inputValue", click.id);
+        await setDoc(todoItemRef, 
+            { isFinished: !click.isFinished }, 
+            { merge: true });
 
         //클릭하면 isFinished의 상태를 바꾸기
         setTodoList(todoList.map((item) => {
