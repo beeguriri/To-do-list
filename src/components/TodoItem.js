@@ -1,6 +1,9 @@
 import React from "react";
+import {List} from "@mui/material";
 import ListItem from '@mui/material/ListItem';
-import IconButton from '@mui/material/IconButton';
+import { ListItemIcon,ListItemText, ListItemButton} from "@mui/material";
+import {Checkbox} from "@mui/material";
+import IconButton from '@mui/material/IconButton'
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { pink } from '@mui/material/colors';
@@ -11,15 +14,19 @@ const TodoItem = (probs) => {
 
     return(
         <div className="todo-item">
-            <div className="item">
-                <ul>
-                    <li className="item" style={style} onClick={() => probs.completeTodo(probs.item)}>
-                        {probs.item.item}
-                    </li>
-                </ul>
-            </div>
-
-            <div className="buttonarea">
+            <List sx={{ width: '100%', flexGrow: 1, display: 'flex' }}>
+                <ListItemButton role={undefined} onClick={() => probs.completeTodo(probs.item)} dense sx={{ width: 400, flexGrow: 1 }}>
+                    <ListItemIcon >
+                        <Checkbox 
+                            edge="start"
+                            checked={probs.item.isFinished}
+                            disableRipple
+                            sx={{ color: pink[500]}}
+                        >
+                        </Checkbox>
+                    </ListItemIcon>
+                    <ListItemText style={style} primary={probs.item.item} />
+                </ListItemButton>
 
                 <ListItem secondaryAction={
                     <IconButton edge="end" aria-label="comments" onClick={() => probs.setUpdateItem({
@@ -28,21 +35,19 @@ const TodoItem = (probs) => {
                         id: probs.item.id,
                         item: probs.item.item,
                         isFinished: probs.item.isFinished
-                })}>
+                    })}>
                         <BorderColorRoundedIcon sx={{ color: pink[500] }} />
                     </IconButton>
-                }> </ListItem>
-                
-
-                {/* <Button variant="outlined" onClick={() => probs.deleteTodo(probs.item)}>Remove</Button> */}
+                } sx={{ width: 50, flexGrow: 1 }}> 
+                </ListItem>
 
                 <ListItem secondaryAction={
                     <IconButton edge="end" aria-label="comments" onClick={() => probs.deleteTodo(probs.item)}>
                         <DeleteRoundedIcon sx={{ color: pink[500] }} />
                     </IconButton>
-                }> </ListItem>
-
-            </div>
+                } sx={{ width: 50, flexGrow: 1 }}> 
+                </ListItem>
+            </List>
         </div>
     );
 }
