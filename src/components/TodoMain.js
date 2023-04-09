@@ -49,7 +49,7 @@ const TodoMain = (probs) => {
 
     useEffect(() => {
 
-        console.log('currentUser', currentUser)
+        // console.log('currentUser', currentUser)
         syncTodoItemListStateWithFirestore();
 
     }, [currentUser]);
@@ -140,10 +140,9 @@ const TodoMain = (probs) => {
         let newEntry = {
             id: updateItem.id,
             item: event.target.value,
-            isFinished: updateItem.isFinished
         }
 
-        console.log('newEntry', newEntry)
+        // console.log('newEntry', newEntry)
         setUpdateItem(newEntry);
     };
 
@@ -156,10 +155,9 @@ const TodoMain = (probs) => {
         // console.log('updateItem: ', updateItem)
 
         const todoItemRef = doc(db, "inputValue", updateItem.id);
-        console.log('todoItemRef', todoItemRef)
+        // console.log('todoItemRef', todoItemRef)
         await setDoc(todoItemRef, 
             { item: updateItem.item},
-            { isFinished: updateItem.isFinished }, 
             { merge: true });
 
         // setTodoList(updateRecord);
