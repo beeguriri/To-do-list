@@ -9,6 +9,7 @@ import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc,
             getDocs, query, orderBy, where,} from "firebase/firestore";
 
 
+
 const TodoMain = (probs) => {
 
     const db = getFirestore(probs.app);
@@ -17,7 +18,6 @@ const TodoMain = (probs) => {
     const[updateItem, setUpdateItem] = useState('');
     const[todoList, setTodoList] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
-
 
 
     //데이터가 추가/상태변경/삭제/수정이 될때마다
@@ -30,6 +30,7 @@ const TodoMain = (probs) => {
                             where("userId", "==", currentUser), 
                             orderBy("createdTime", "desc"));
 
+
         getDocs(q).then((querySnapshot) => {
             const firestoreTodoItemList = [];
             querySnapshot.forEach((doc) => {
@@ -39,6 +40,7 @@ const TodoMain = (probs) => {
                     isFinished: doc.data().isFinished,
                     createdTime: doc.data().createdTime ?? 0,
                     userId: doc.data().userId,
+
                 });
             });
             // console.log('firestoreTodoItemList', firestoreTodoItemList)
@@ -53,6 +55,7 @@ const TodoMain = (probs) => {
         syncTodoItemListStateWithFirestore();
 
     }, [currentUser]);
+
         
 
     const addItem = async() => {
@@ -69,6 +72,7 @@ const TodoMain = (probs) => {
             isFinished: false,
             createdTime: Math.floor(Date.now() / 1000),
             userId: currentUser,
+
         });
 
         //데이터 베이스 동기화
@@ -143,7 +147,7 @@ const TodoMain = (probs) => {
         }
 
         // console.log('newEntry', newEntry)
-        setUpdateItem(newEntry);
+
     };
 
     // 동일id의 item 삭제하고
@@ -158,6 +162,7 @@ const TodoMain = (probs) => {
         // console.log('todoItemRef', todoItemRef)
         await setDoc(todoItemRef, 
             { item: updateItem.item},
+
             { merge: true });
 
         // setTodoList(updateRecord);
