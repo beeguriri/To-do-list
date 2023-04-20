@@ -3,6 +3,10 @@
 firebase.json
 package-lock.json
 package.json
+package-lock.json
+package.json
+App.js
+
 
 # dependencies
 /node_modules
